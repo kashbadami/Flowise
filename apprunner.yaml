@@ -3,7 +3,7 @@ runtime: nodejs18
 build:
   commands:
     pre-build:
-      - npm install -g pnpm
+      - curl -fsSL https://get.pnpm.io/install.sh | sh -
       - pnpm --version  # Verify pnpm is installed
     build:
       - pnpm install
