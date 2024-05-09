@@ -1,32 +1,25 @@
-# Build local monorepo image
-# docker build --no-cache -t  flowise .
+FROM node:18-slim
 
-# Run image
-# docker run -d -p 3000:3000 flowise
+# Set working directory
+WORKDIR /usr/src/app
 
-FROM node:18-alpine
-RUN apk add --update libc6-compat python3 make g++
-# needed for pdfjs-dist
-RUN apk add --no-cache build-base cairo-dev pango-dev
-
-# Install Chromium
-RUN apk add --no-cache chromium
-
-#install PNPM globaly
+# Install pnpm
 RUN npm install -g pnpm
 
-ENV PUPPETEER_SKIP_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+# Copy package.json and other relevant files
+COPY package.json pnpm-lock.yaml ./
 
-WORKDIR /usr/src
-
-# Copy app source
-COPY . .
-
+# Install dependencies
 RUN pnpm install
 
+# Copy the rest of your application code
+COPY . .
+
+# Build the application
 RUN pnpm build
 
+# Expose the port the app runs on
 EXPOSE 3000
 
-CMD [ "pnpm", "start" ]
+# Command to run the application
+CMD ["pnpm", "start"]
