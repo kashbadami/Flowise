@@ -4,17 +4,18 @@ build:
   commands:
     pre-build:
       - npm install -g pnpm
-      - pnpm install --filter=... --prod=false
+      - pnpm --version  # Verify pnpm is installed
     build:
-      - pnpm build
+      - pnpm install
+    post-build:
+      - pnpm run build
   env:
     - name: NODE_ENV
       value: "production"
 run:
   runtime-version: 18.19.0
-  pre-run:
-    - echo "Preparing to run Flowise..."
   command: pnpm start
   network:
     port: 3000
     env: PORT
+
