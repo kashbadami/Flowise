@@ -6,9 +6,7 @@ build:
       - npm install -g pnpm
       - pnpm install --filter=... --prod=false
     build:
-      - pnpm install --prod
-    post-build:
-      - pnpm run build
+      - pnpm build
   env:
     - name: NODE_ENV
       value: "production"
